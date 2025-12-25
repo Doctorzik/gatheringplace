@@ -5,3 +5,10 @@ pnpm-lock.yaml
 .env 
 
 src/prisma/generated 
+src/generated/prisma
+
+generated/prisma
+
+logs
+
+
