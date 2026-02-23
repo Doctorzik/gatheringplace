@@ -48,7 +48,8 @@
     "pg": "^8.16.3",
     "studio": "^0.13.5",
     "winston": "^3.19.0",
-    "zod": "^4.2.0"
+    "zod": "^4.2.0",
+    "prisma": "^7.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
@@ -59,7 +60,6 @@
     "eslint-plugin-prettier": "^5.5.4",
     "nodemon": "^3.1.11",
     "prettier": "^3.7.4",
-    "prisma": "^7.2.0",
     "supertest": "^7.2.2",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
