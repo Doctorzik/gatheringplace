@@ -25,7 +25,8 @@
     "studio": "prisma studio",
     "migrate": "prisma migrate",
     "generate": "prisma generate",
-    "tes": "node test.js"
+    "tes": "node test.js",
+    "postinstall": "prisma generate"
   },
   "keywords": [],
   "author": "",
