@@ -42,4 +42,4 @@ import arcjet, { shield, detectBot, tokenBucket, slidingWindow  } from '@arcjet/
   ],
 });
 
-export default {aj}
+export default aj
