@@ -1,0 +1,827 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Gathering Place API",
+    "description": "This application stores resources for the gathering place",
+    "version": "1.0.0",
+    "contact": {
+      "email": "ezekieljeremiah@gmail.com"
+    }
+  },
+  "host": "gatheringplace.onrender.com/",
+  "basePath": "/",
+  "schemes": ["https"],
+  "tags": [
+    {
+      "name": "users",
+      "description": "Everything about users"
+    },
+    {
+      "name": "event",
+      "description": "Access to events as they happen"
+    },
+    {
+      "name": "skills",
+      "description": "The different skills going on"
+    }
+  
+  ],
+  "paths": {
+    "/experience/": {
+      "get": {
+        "tags": ["experience"],
+        "summary": "Get all the missionaries experiences",
+        "description": "Get all experiences",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/experiences"
+                }
+              }
+            }
+          }
+        },
+        "422": {
+          "description": "Validation exception"
+        }
+      },
+      "post": {
+        "tags": ["experience"],
+        "description": "Post a missionary experience",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "memberId": {
+                  "memberId": "id of the member with the experience",
+                  "required": true
+                },
+                "areaCompanion": {
+                  "areaCompanion": "companion as at when the experience occured",
+                  "required": true,
+                  "type": "[]"
+                },
+                "dateOfExperience": {
+                  "dateOfExperience": "the date the experience occured",
+                  "required": false
+                },
+                "description": {
+                  "description": "description of the whole experince"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/experience/{memberId}": {
+      "get": {
+        "tags": ["experience"],
+        "summary": "Get all  experiences for a particular missionary with the details of the missionary",
+        "description": "Get all experiences of a missionary",
+        "parameters": [
+          {
+            "name": "memberId",
+            "in": "path",
+            "schema": {
+              "type": "objectId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/experiences"
+                }
+              }
+            }
+          }
+        },
+        "422": {
+          "description": "Validation exception"
+        }
+      },
+      "delete": {
+        "tags": ["experience"],
+        "summary": "Deletes a member experience",
+        "description": "delete experience",
+        "operationId": "memberidtodeleteExperience",
+        "parameters": [
+          {
+            "name": "memberidtodeleteExperience",
+            "in": "path",
+            "description": "Member id to delete experince",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": ""
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid  attendance Id"
+          }
+        }
+      },
+      "put": {
+        "tags": ["experience"],
+        "summary": "Update an experience of a member",
+        "description": "Member experience to update",
+        "parameters": [
+          {
+            "name": "memberId",
+            "in": "path",
+            "required": true,
+            "type": "objectId"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "description": "string"
+                },
+                "areaCompanion": {
+                  "array": ""
+                },
+                "dateOfExperience": {
+                  "dateOfExperience": "date"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/attendance/": {
+      "get": {
+        "tags": ["attendance"],
+        "summary": "Get all the attendance",
+        "description": "Get all the attendance",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Attendance"
+                }
+              }
+            }
+          }
+        },
+        "422": {
+          "description": "Validation exception"
+        }
+      },
+      "post": {
+        "tags": ["attendance"],
+        "summary": "Post an attendance",
+        "description": "Post an attendance",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "eventId": {
+                  "an obectId of event": "284729279",
+                  "required": true
+                },
+                "memberId": {
+                  "an objectid of member": "jsdjs372377",
+                  "required": true
+                },
+                "status": {
+                  "present": "present",
+                  "required": true
+                },
+                "timestamp": {
+                  "date": ""
+                }
+              }
+            }
+          }
+        ],
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Pet"
+            }
+          },
+          "application/xml": {
+            "schema": {
+              "$ref": "#/components/schemas/Pet"
+            }
+          },
+          "application/x-www-form-urlencoded": {
+            "schema": {
+              "$ref": "#/components/schemas/Pet"
+            }
+          }
+        },
+        "required": true,
+        "responses": {
+          "200": {
+            "description": "Attendance Successfully posted"
+          },
+          "400": {
+            "description": "Invalid Parameters"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/attendance/{attendanceid}": {
+      "get": {
+        "tags": ["attendance"],
+        "summary": "Get attendance by Id",
+        "description": "Returns a single member attendance",
+        "operationalId": "getAttendanceById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of attendance to return",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["attendance"],
+        "summary": "Deletes an attendance",
+        "description": "delete attendance",
+        "operationId": "deleteAttendance",
+        "parameters": [
+          {
+            "name": "attendanceId",
+            "in": "path",
+            "description": "Attendance id to delete",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": ""
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid  attendance Id"
+          }
+        }
+      },
+      "put": {
+        "tags": ["attendance"],
+        "summary": "Update an attendance",
+        "description": "Attendance to update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "objectId"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "eventId": {
+                  "an obectId of event": "284729279",
+                  "required": true
+                },
+                "memberId": {
+                  "an objectid of member": "jsdjs372377",
+                  "required": true
+                },
+                "status": {
+                  "present": "present",
+                  "required": true
+                },
+                "timestamp": {
+                  "date": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/users/register": {
+      "tag": ["users"],
+      "post": {
+        "description": "This route let you register users details to the data base",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "username": "choose the desired user name for registration",
+                  "required": true
+                },
+                "password": {
+                  "password": "choose any strong password for registration",
+                  "required": true
+                }
+              }
+            }
+          }
+        ],
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Pet"
+            }
+          },
+
+          "application/x-www-form-urlencoded": {
+            "schema": {
+              "$ref": "#/components/schemas/Pet"
+            }
+          }
+        },
+        "required": true,
+        "responses": {
+          "200": {
+            "description": "Attendance Successfully posted"
+          },
+          "400": {
+            "description": "Invalid Parameters"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "description": "Api users use this route to login with their username and password",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "username": "as used for registration"
+                },
+                "password": {
+                  "password": "as used for registation"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "users/logout": {
+      "get": {
+        "description": "Logout of the application",
+
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+
+    "/events/": {
+      "get": {
+        "tags": ["event"],
+        "summary": "Get all events",
+        "description": "Get all events",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": ["event"],
+        "summary": "Add an event",
+        "description": "Event to Add",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "name": "nameofevent",
+                  "required": true
+                },
+                "location": {
+                  "location": "locationofevent",
+                  "required": true
+                },
+                "description": {
+                  "description": "describe what the event is all about",
+                  "required": true
+                },
+                "date": {
+                  "date": "date format"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/events/{id}": {
+      "get": {
+        "tags": ["event"],
+        "summary": "Get event by Id",
+        "description": "Returns a single member attendance",
+        "operationalId": "getEventById",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "ID of event to return",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["event"],
+        "summary": "Deletes an event",
+        "description": "delete an event",
+        "operationId": "deleteEvent",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "Event id to delete",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": ""
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid  attendance Id"
+          }
+        }
+      },
+      "put": {
+        "tags": ["event"],
+        "summary": "Update an event",
+        "description": "Event to update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "objectId"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "name": "nameofevent",
+                  "required": true
+                },
+                "location": {
+                  "location": "locationofevent",
+                  "required": true
+                },
+                "description": {
+                  "description": "describe what the event is all about",
+                  "required": true
+                },
+                "date": {
+                  "date": "date format"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/members/": {
+      "get": {
+        "tags": ["member"],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": ["member"],
+        "description": "Input a single member",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "name": "nameofmember",
+                  "required": true
+                },
+                "email": {
+                  "email": "memberemail",
+                  "required": true
+                },
+                "missionserved": {
+                  "missionserved": "the name of the mission",
+                  "required": true
+                },
+                "missionPresident": {
+                  "missionPresident": "missionPresidentname"
+                },
+                "returnDate": {
+                  "returnDate": "date of return",
+                  "required": true
+                },
+                "currentLocation": {
+                  "currentLocation": "currentLocation",
+                  "required": true
+                },
+                "hobbies": {
+                  "hobbies": ["String"],
+                  "required": true
+                },
+                "bestquote": {
+                  "bestquote": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/members/{memberId}": {
+      "get": {
+        "tags": ["member"],
+        "summary": "Get member by Id",
+        "description": "Returns a single member ",
+        "operationalId": "getMemberById",
+        "parameters": [
+          {
+            "name": "memberId",
+            "in": "path",
+            "description": "ID of member to return",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["member"],
+        "summary": "Deletes a member",
+        "description": "delete member",
+        "operationId": "deleteMember",
+        "parameters": [
+          {
+            "name": "memberId",
+            "in": "path",
+            "description": "Member id to delete",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": ""
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid  attendance Id"
+          }
+        }
+      },
+      "put": {
+        "tags": ["member"],
+        "summary": "Update a member",
+        "description": "Member to update",
+        "parameters": [
+          {
+            "name": "memberId",
+            "in": "path",
+            "required": true,
+            "type": "objectId"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "name": "nameofmember",
+                  "required": true
+                },
+                "email": {
+                  "email": "memberemail",
+                  "required": true
+                },
+                "missionserved": {
+                  "missionserved": "the name of the mission",
+                  "required": true
+                },
+                "missionPresident": {
+                  "missionPresident": "missionPresidentname"
+                },
+                "returnDate": {
+                  "returnDate": "date of return",
+                  "required": true
+                },
+                "currentLocation": {
+                  "currentLocation": "currentLocation",
+                  "required": true
+                },
+                "hobbies": {
+                  "hobbies": ["String"],
+                  "required": true
+                },
+                "bestquote": {
+                  "bestquote": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "schema": ["https", "http"]
+}

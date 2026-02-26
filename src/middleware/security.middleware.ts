@@ -1,7 +1,13 @@
-import aj from '#config/arcject.js';
-import logger from '#config/logger.js';
-import {slidingWindow} from '@arcjet/node';
-const securityMiddleware = async (req, res, next) => {
+import aj from '../config/arcject.js';
+import logger from '../config/logger.js';
+import { slidingWindow } from '@arcjet/node';
+import type { NextFunction, Request, Response } from 'express';
+
+const securityMiddleware = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const role = req.user?.role || 'guest';
 
@@ -34,21 +40,24 @@ const securityMiddleware = async (req, res, next) => {
         interval: '1m',
         max: limit,
       })
-  )
-  
-    const decision = await client.protect(req);
-    if (decision.isDenied() && decision.reason.isBot()) {
+    );
+
+    const decision = await client.protect(req as any, {
+      requested: 0
+    });
+    if (decision.isDenied() && decision.reason?.isBot()) {
       logger.warn('Bot request blocked', {
         ip: req.ip,
         userAgent: req.get('User-Agent'),
       });
 
-      return res.status(403).json({
+      res.status(403).json({
         error: 'Forbidden',
         message: 'Automated requests are not allowed',
       });
+      return;
     }
-    if (decision.isDenied() && decision.reason.isShield()) {
+    if (decision.isDenied() && decision.reason?.isShield()) {
       logger.warn('Shield blocked request ', {
         ip: req.ip,
         userAgent: req.get('User-Agent'),
@@ -56,21 +65,23 @@ const securityMiddleware = async (req, res, next) => {
         method: req.method,
       });
 
-      return res.status(403).json({
+      res.status(403).json({
         error: 'Forbidden',
         message: 'Automated requests are not allowed',
       });
+      return;
     }
-    if (decision.isDenied() && decision.reason.isRateLimit()) {
+    if (decision.isDenied() && decision.reason?.isRateLimit()) {
       logger.warn('Rate limit exceeded', {
         ip: req.ip,
         userAgent: req.get('User-Agent'),
       });
 
-      return res.status(403).json({
+      res.status(403).json({
         error: 'Forbidden',
         message: 'Too many request',
       });
+      return;
     }
     next();
   } catch (error) {

@@ -1,8 +1,37 @@
-import { prisma } from '#config/database.js';
-import logger from '#config/logger.js';
+import { prisma } from '../config/database.js';
+import logger from '../config/logger.js';
 import bcrypt from 'bcrypt';
+import type { Role } from '@prisma/client';
 
-export const hashPassword = async password => {
+type CreateUserInput = {
+  name: string;
+  email: string;
+  password: string;
+  role?: string;
+};
+
+type CreatedUser = {
+  id: string;
+  email: string;
+  name: string;
+  role: Role;
+  createdAt: Date;
+};
+
+type GetUserInput = {
+  email: string;
+  password: string;
+};
+
+type AuthenticatedUser = {
+  id: string;
+  name: string;
+  email: string;
+  role: Role;
+  createdAt: Date;
+};
+
+export const hashPassword = async (password: string): Promise<string> => {
   try {
     return await bcrypt.hash(password, 10);
   } catch (error) {
@@ -11,7 +40,7 @@ export const hashPassword = async password => {
   }
 };
 
-const comparePassword = async (password, hash) => {
+const comparePassword = async (password: string, hash: string): Promise<boolean> => {
   try {
     return await bcrypt.compare(password, hash);
   } catch (error) {
@@ -20,7 +49,11 @@ const comparePassword = async (password, hash) => {
   }
 };
 
-export const createUser = async ({ name, email, password }) => {
+export const createUser = async ({
+  name,
+  email,
+  password,
+}: CreateUserInput): Promise<CreatedUser> => {
   try {
     const existingUser = await prisma.user.findUnique({
       where: {
@@ -39,6 +72,7 @@ export const createUser = async ({ name, email, password }) => {
       select: {
         id: true,
         email: true,
+        name: true,
         role: true,
         createdAt: true,
       },
@@ -54,7 +88,10 @@ export const createUser = async ({ name, email, password }) => {
 
 // LOGIN USER
 
-export const getUser = async ({ email, password }) => {
+export const getUser = async ({
+  email,
+  password,
+}: GetUserInput): Promise<AuthenticatedUser> => {
   try {
     const user = await prisma.user.findUnique({
       where: {

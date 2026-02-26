@@ -1,14 +1,15 @@
-import arcjet, { shield, detectBot, tokenBucket, slidingWindow  } from '@arcjet/node';
-//import { isSpoofedBot } from '@arcjet/inspect';
+import arcjet, { shield, detectBot, tokenBucket, slidingWindow } from '@arcjet/node';
+// import { isSpoofedBot } from '@arcjet/inspect';
 
+const arcjetKey = process.env.ARCJET_KEY ?? '';
+if (!arcjetKey && process.env.NODE_ENV === 'production') {
+  throw new Error('ARCJET_KEY is required in production');
+}
 
-
-
-
- const aj = arcjet({
+const aj = arcjet({
   // Get your site key from https://app.arcjet.com and set it as an environment
   // variable rather than hard coding.
-  key: process.env.ARCJET_KEY,
+  key: arcjetKey,
   rules: [
     // Shield protects your app from common attacks e.g. SQL injection
     shield({ mode: 'LIVE' }),
@@ -35,11 +36,11 @@ import arcjet, { shield, detectBot, tokenBucket, slidingWindow  } from '@arcjet/
       capacity: 10, // Bucket capacity of 10 tokens
     }),
     slidingWindow({
-      mode: "LIVE",
-      interval : "2s",
-      max  : 5
-    })
+      mode: 'LIVE',
+      interval: '2s',
+      max: 5,
+    }),
   ],
 });
 
-export default aj
+export default aj;

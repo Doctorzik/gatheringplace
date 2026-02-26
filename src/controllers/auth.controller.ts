@@ -1,11 +1,21 @@
-import logger from '#config/logger.js';
-import { createUser, getUser } from '#services/auth.service.js';
-import { formatValidationErrors } from '#utils/format.js';
-import { signUpSchema, signInSchema } from '#validations/auth.validation.js';
-import { jwtToken } from '#utils/jwt.js';
-import { cookies } from '#utils/cookies.js';
+import logger from '../config/logger.js';
+import { createUser, getUser } from '../services/auth.service.js';
+import { formatValidationErrors } from '../utils/format.js';
+import {
+  signUpSchema,
+  signInSchema,
+  type SignInInput,
+  type SignUpInput,
+} from '../validations/auth.validation.js';
+import { jwtToken } from '../utils/jwt.js';
+import { cookies } from '../utils/cookies.js';
+import type { NextFunction, Request, Response } from 'express';
 
-export const signup = async (req, res, next) => {
+export const signup = async (
+  req: Request<{}, {}, SignUpInput>,
+  res: Response,
+  next: NextFunction
+): Promise<Response | void> => {
   try {
     const validationResult = signUpSchema.safeParse(req.body);
     if (!validationResult.success) {
@@ -42,14 +52,18 @@ export const signup = async (req, res, next) => {
     });
   } catch (error) {
     logger.error('Signup error', error);
-    if (error.message === 'Error creating User') {
+    if ((error as Error).message === 'Error creating User') {
       return res.status(409).json({ error: 'User already exist' });
     }
     next(error);
   }
 };
 
-export const login = async (req, res, next) => {
+export const login = async (
+  req: Request<{}, {}, SignInInput>,
+  res: Response,
+  next: NextFunction
+): Promise<Response | void> => {
   try {
     const validateResult = signInSchema.safeParse(req.body);
 
@@ -84,7 +98,11 @@ export const login = async (req, res, next) => {
   }
 };
 
-export const signOut = async (req, res, next) => {
+export const signOut = async (
+  _req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     cookies.clear(res, 'token');
     res.status(200).json({

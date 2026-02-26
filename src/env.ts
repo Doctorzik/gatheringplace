@@ -1,8 +1,7 @@
-const REQUIRED_IN_PROD = ['JWT_SECRET', 'ARCJET_KEY', 'DATABASE_URL'];
+const REQUIRED_IN_PROD: string[] = ['JWT_SECRET', 'ARCJET_KEY', 'DATABASE_URL'];
 
-export const validateEnv = () => {
+export const validateEnv = (): void => {
   const isProduction = process.env.NODE_ENV === 'production';
-
 
   if (!isProduction) return;
   const missing = REQUIRED_IN_PROD.filter(

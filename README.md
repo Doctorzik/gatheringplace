@@ -41,6 +41,12 @@ pnpm dev
 
 The app runs on `http://localhost:3000` by default.
 
+## Production build
+```bash
+pnpm build
+pnpm start
+```
+
 ## Required environment variables
 For local development:
 - `PORT`
